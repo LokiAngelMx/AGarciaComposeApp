@@ -51,46 +51,52 @@ fun DetailScreen(
     productId: Int,
     productDetailViewModel: ProductDetailViewModel = hiltViewModel()
     ) {
-    var product by remember {
-        mutableStateOf(
-            Product(
-                id = 0,
-                title = "",
-                description = "",
-                price = 0.0,
-                category = "",
-                rating = Rating(count = 0, rate = 0.0),
-                image = ""
-            )
-        )
-    }
+//    var product by remember {
+//        mutableStateOf(
+//            Product(
+//                id = 0,
+//                title = "",
+//                description = "",
+//                price = 0.0,
+//                category = "",
+//                rating = Rating(count = 0, rate = 0.0),
+//                image = ""
+//            )
+//        )
+//    }
+//
+//    var isLoading by remember {
+//        mutableStateOf(false)
+//    }
+//
+//    val scope = rememberCoroutineScope()
+//
+//    LaunchedEffect(key1 = true) {
+//        scope.launch {
+//            val BASE_URL = "https://fakestoreapi.com/"
+//            val productService = Retrofit.Builder()
+//                .baseUrl(BASE_URL)
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build()
+//                .create(ProductService::class.java)
+//            isLoading = true
+//
+//            val response = productService.getProductById(productId)
+//            withContext(Dispatchers.IO) {
+//                product = response
+//                isLoading = false
+//            }
+//        }
+//    }
 
-    var isLoading by remember {
-        mutableStateOf(false)
-    }
-
-    val scope = rememberCoroutineScope()
-
-    LaunchedEffect(key1 = true) {
-        scope.launch {
-            val BASE_URL = "https://fakestoreapi.com/"
-            val productService = Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-                .create(ProductService::class.java)
-            isLoading = true
-
-            val response = productService.getProductById(productId)
-            withContext(Dispatchers.IO) {
-                product = response
-                isLoading = false
-            }
+    val state = productDetailViewModel.productState.value
+    if (state.isLoading) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator()
         }
-    }
-
-    if (isLoading) {
-        CircularProgressIndicator()
     }
     else {
         Column(
@@ -99,7 +105,7 @@ fun DetailScreen(
                 .padding(10.dp)
         ) {
             Text(
-                product.title,
+                state.product.title,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(bottom = 10.dp),
@@ -140,7 +146,7 @@ fun DetailScreen(
                     modifier = Modifier.align(Alignment.CenterVertically)
                 )
                 Text(
-                    text = state.product.rating.rate.toString(),
+                    state.product.rating.rate.toString(),
                     modifier = Modifier.align(Alignment.CenterVertically)
                 )
                 Spacer(modifier = Modifier.weight(1f))
@@ -156,7 +162,7 @@ fun DetailScreen(
                         .weight(1f)
                 ) {
                     Text(
-                        text = state.product.category,
+                        state.product.category,
                         color = Color.White,
                         style = TextStyle(
                             fontSize = 12.sp

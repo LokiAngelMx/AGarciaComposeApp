@@ -49,8 +49,10 @@ import androidx.navigation.navArgument
 import com.example.composeapp.presentation.screens.DetailScreen
 import com.example.composeapp.presentation.screens.HomeScreen
 import com.example.composeapp.presentation.theme.ComposeAppTheme
+import dagger.hilt.android.AndroidEntryPoint
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

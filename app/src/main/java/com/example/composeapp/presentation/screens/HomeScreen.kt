@@ -59,34 +59,35 @@ fun HomeScreen(
     navController: NavController,
     productsViewModel: ProductsViewModel = hiltViewModel()
     ) {
-    var products by remember {
-        mutableStateOf(listOf<Product>())
-    }
-    var isLoading by remember {
-        mutableStateOf(false)
-    }
-    val scope = rememberCoroutineScope()
+//    var products by remember {
+//        mutableStateOf(listOf<Product>())
+//    }
+//    var isLoading by remember {
+//        mutableStateOf(false)
+//    }
+//    val scope = rememberCoroutineScope()
+//
+//    LaunchedEffect(key1 = true) {
+//        scope.launch {
+//            val BASE_URL = "https://fakestoreapi.com/"
+//            val productService = Retrofit.Builder()
+//                .baseUrl(BASE_URL)
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build()
+//                .create(ProductService::class.java)
+//            isLoading = true
+//
+//            val response = productService.getProducts()
+//            Log.i("HomeScreen", response.toString())
+//            withContext(Dispatchers.IO) {
+//                products = response
+//                isLoading = false
+//            }
+//        }
+//    }
 
-    LaunchedEffect(key1 = true) {
-        scope.launch {
-            val BASE_URL = "https://fakestoreapi.com/"
-            val productService = Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-                .create(ProductService::class.java)
-            isLoading = true
-
-            val response = productService.getProducts()
-            Log.i("HomeScreen", response.toString())
-            withContext(Dispatchers.IO) {
-                products = response
-                isLoading = false
-            }
-        }
-    }
-
-    if (isLoading) {
+    val state = productsViewModel.productsState.value
+    if (state.isLoading) {
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
@@ -99,7 +100,7 @@ fun HomeScreen(
             columns = GridCells.Fixed(2),
             modifier = Modifier.padding(16.dp)
         ) {
-            items(products) {
+            items(state.products) {
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()

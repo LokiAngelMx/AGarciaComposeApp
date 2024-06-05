@@ -21,7 +21,7 @@ class ProductDetailViewModel @Inject constructor (
     private val productId = savedStateHandle.get<Int>("productId") ?: 0
     private var productsJob: Job? = null
     private var _productState = mutableStateOf(ProductState())
-    val productsState = _productState
+    val productState = _productState
 
     init {
         getProduct()
@@ -36,7 +36,7 @@ class ProductDetailViewModel @Inject constructor (
                 }
 
                 is ApiResult.Success -> {
-                    _productState.value = ProductState(product = result.data, isLoading = false)
+                    _productState.value = ProductState(product = result.data!!, isLoading = false)
                 }
 
                 is ApiResult.Error -> {
